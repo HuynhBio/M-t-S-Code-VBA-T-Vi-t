@@ -1,3 +1,4 @@
+Attribute VB_Name = "Calc"
 Sub OxygenSolubility(Wt As Double, UnitWt As String, Bp As Double, UnitBp As String, Sc As Double, UnitSc As String)
     'Doi don vi nhiet do sang Celsius
     If UnitWt = "degC" Or UnitWt = "degrees Celsius" Then
