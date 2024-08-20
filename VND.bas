@@ -1,4 +1,4 @@
-Attribute VB_Name = "Module1"
+Attribute VB_Name = "DocSoTien"
 Function VND(ByVal So As Long) As String
     VND = DocSo(So) & " " & ChrW(273) & ChrW(7891) & "ng"
 End Function
@@ -18,56 +18,83 @@ Function DocSo(ByVal So As Long) As String
         DocSo = "kh" & ChrW(244) & "ng"
         Exit Function
     End If
-    HangTy = ""
-    SoDu = So
-    SoHang = Int(SoDu / 1000000000)
-    If SoHang > 0 Then
-        HangTy = DocSo(SoHang) & " " & "t" & ChrW(7927) & " "
-        SoDu = SoDu Mod 1000000000
-    End If
-
-    HangTrieu = ""
-    SoHang = Int(SoDu / 1000000)
-    If SoHang > 0 Then
-        HangTrieu = DocSo(SoHang) & " " & "tri" & ChrW(7879) & "u" & " "
-        SoDu = SoDu Mod 1000000
-    End If
-
-    HangNgan = ""
-    SoHang = Int(SoDu / 1000)
-    If SoHang > 0 Then
-        HangNgan = DocSo(SoHang) & " " & "ng" & ChrW(224) & "n" & " "
-        SoDu = SoDu Mod 1000
-    End If
-
-    HangTram = ""
-    If So > 99 Then
-        SoHang = Int(SoDu / 100)
-        If SoHang = 0 Then
-            HangTram = "kh" & ChrW(244) & "ng" & " " & "tr" & ChrW(259) & "m" & " "
+    
+    If So Mod 10 > 0 Then
+        HangDonVi = ""
+        If So Mod 100 > 11 And So Mod 10 = 1 Then
+            HangDonVi = "m" & ChrW(7889) & "t"
         Else
-            HangTram = DonViTram(SoHang) & " "
-            SoDu = SoDu Mod 100
+            HangDonVi = DonVi(So Mod 10)
         End If
+    Else
+        HangDonVi = ""
     End If
-
-    HangChuc = ""
+    
     If So > 9 Then
-        SoHang = Int(SoDu / 10)
+        HangChuc = ""
+        SoHang = Int((So Mod 100) / 10)
         If SoHang > 0 Then
             HangChuc = DonViChuc(SoHang) & " "
         ElseIf SoHang = 0 Then
-            If SoDu Mod 10 = 0 Then
+            If (So Mod 100) = 0 Then
             HangChuc = ""
             Else
             HangChuc = "l" & ChrW(7867) & " "
             End If
         End If
-    End If
-    If SoDu > 11 And SoDu Mod 10 = 1 Then
-        HangDonVi = "m" & ChrW(7889) & "t"
     Else
-        HangDonVi = DonVi(SoDu Mod 10)
+        DocSo = Trim(HangDonVi)
+        Exit Function
+    End If
+    
+    If So > 99 Then
+        HangTram = ""
+        SoHang = Int((So Mod 1000) / 100)
+        If (So Mod 1000) > 0 Then
+            If SoHang = 0 Then
+                HangTram = "kh" & ChrW(244) & "ng" & " " & "tr" & ChrW(259) & "m" & " "
+            Else
+                HangTram = DonViTram(SoHang) & " "
+            End If
+        End If
+    Else
+        DocSo = Trim(HangChuc & HangDonVi)
+        Exit Function
+    End If
+    
+    If So > 999 Then
+        HangNgan = ""
+        SoHang = Int((So Mod 1000000) / 1000)
+        If SoHang > 0 Then
+            HangNgan = DocSo(SoHang) & " " & "ng" & ChrW(224) & "n" & " "
+        End If
+    Else
+        DocSo = Trim(HangTram & HangChuc & HangDonVi)
+        Exit Function
+    End If
+    
+    If So > 999999 Then
+        HangTrieu = ""
+        SoHang = Int((So Mod 1000000000) / 1000000)
+        If SoHang > 0 Then
+            HangTrieu = DocSo(SoHang) & " " & "tri" & ChrW(7879) & "u" & " "
+        End If
+    Else
+        DocSo = Trim(HangNgan & HangTram & HangChuc & HangDonVi)
+        Exit Function
+    End If
+    
+    If So > 999999999 Then
+        HangTy = ""
+        SoDu = So
+        SoHang = Int(So / 1000000000)
+        If SoHang > 0 Then
+            HangTy = DocSo(SoHang) & " " & "t" & ChrW(7927) & " "
+        End If
+    Else
+        DocSo = Trim(HangTrieu & HangNgan & HangTram & HangChuc & HangDonVi)
+        Exit Function
     End If
     DocSo = Trim(HangTy & HangTrieu & HangNgan & HangTram & HangChuc & HangDonVi)
 End Function
+
