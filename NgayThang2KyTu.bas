@@ -1,9 +1,5 @@
 
 Function DocNgay(ByVal Ngay As Date) As String
-    If Not IsDate(Ngay) Then
-        DocNgay = "Gia tri khong hop le"
-        Exit Function
-    End If
     DocNgay = "Ng" & ChrW(224) & "y " & DocSo(Day(Ngay)) & " Th" & ChrW(225) & "ng " & DocSo(Month(Ngay)) & " N" & ChrW(259) & "m " & DocSo(Year(Ngay))
 End Function
 
